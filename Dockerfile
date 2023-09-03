@@ -7,8 +7,8 @@ RUN apt-get update && \
 
 WORKDIR /usr/src/app
 #COPY . .
-RUN git clone https://github.com/timekeeper18/itmo_docker.git
-WORKDIR /usr/src/app/itmo_docker
+RUN git clone https://github.com/timekeeper18/itmo_reliableml.git
+WORKDIR /usr/src/app/itmo_reliableml
 
 ENV PYTHONOPTIMIZE true
 ENV DEBIAN_FRONTEND noninteractive

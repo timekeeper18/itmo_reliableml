@@ -5,9 +5,15 @@
 ### Тема проекта
 Здесь будет тема проекта, когда придумаем
 ### Состав участников:
-- Виталий Ахмадиев [@VitalyAkhmadiev](https://t.me/VitalyAkhmadiev)
-- Дмитрий Паршин [@The_Illusive_Man_2000](https://t.me/The_Illusive_Man_2000)
-- Павел Сауков [@a12c4](https://t.me/a12c4)
+- Виталий Ахмадиев 
+  - tg: [@VitalyAkhmadiev](https://t.me/VitalyAkhmadiev)
+  - git: [timekeeper18](https://github.com/timekeeper18)
+- Дмитрий Паршин
+  - tg: [@The_Illusive_Man_2000](https://t.me/The_Illusive_Man_2000)
+  - git: [The-Illusive-Man-2000](https://github.com/The-Illusive-Man-2000)
+- Павел Сауков
+  - tg: [@a12c4](https://t.me/a12c4)
+  - git: [Pavel](https://github.com/)
 
 ***
 ## Getting Started
