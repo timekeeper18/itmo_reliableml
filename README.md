@@ -13,7 +13,7 @@
   - git: [The-Illusive-Man-2000](https://github.com/The-Illusive-Man-2000)
 - Павел Сауков
   - tg: [@a12c4](https://t.me/a12c4)
-  - git: [Pavel](https://github.com/)
+  - git: [waitforcode](https://github.com/waitforcode)
 
 ***
 ## Getting Started
