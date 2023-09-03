@@ -1,0 +1,8 @@
+version: '3.3'
+services:
+
+  datamart-server:
+    build: .
+    container_name: dark_lord
+    ports:
+      - "8000:8000"

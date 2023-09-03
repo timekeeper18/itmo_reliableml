@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "itmo-reliableml"
+version = "0.1.0"
+description = ""
+authors = ["itmo_pdv_team"]
+readme = "README.md"
+packages = [{include = "itmo_reliableml"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.103.1"}
+uvicorn = "^0.23.2"
+uvloop = "^0.17.0"
+orjson = "^3.9.5"
+setuptools = "^68.1.2"
+python-dotenv = "^1.0.0"
+pydantic-settings = "^2.0.3"
+pathlib = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
