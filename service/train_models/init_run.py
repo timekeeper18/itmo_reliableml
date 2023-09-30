@@ -1,24 +1,38 @@
 from pathlib import Path
 
+import wandb
 from ultralytics import YOLO, settings
 
 # Settings init
-DATASET = 'Occlusal caries detection.v10i.yolov8'
 ROOT = Path().cwd()
-DATA = ROOT / 'service' / 'data'
+
+DATASET = 'dentasis_v32i_Caries_v0-v0'
+DATA = ROOT / 'service' / 'data' / DATASET
+
+wandb.login(key='')
+run = wandb.init(
+    entity="dentist_ai",
+    project="Dentist_AI",
+    name=f'{DATASET}_YOLO8',)
+
+
 settings.update({'runs_dir': ROOT / 'service' / 'train_models' / 'runs',
                  'wandb': True})
 
-# Create a new YOLO model from scratch
-# model = YOLO('yolov8n.yaml')
-
 # Load a pretrained YOLO model (recommended for training)
-model = YOLO(ROOT / 'service' / 'train_models' / 'pretrained' / 'yolov8n.pt')
+model = YOLO('yolov8m.yaml')
+# model = YOLO(ROOT / 'service' / 'train_models' / 'pretrained' / 'yolov8n.pt')
+
+if DATA.is_dir():
+    artifact_dir = DATA
+else:
+    artifact = run.use_artifact("dentist_ai/Dentist_AI/dentasis_v32i_Caries_v0:v0", type="dataset")
+    artifact.download(DATA)
 
 # Train the model using the 'coco128.yaml' dataset for 3 epochs
-model.train(data=DATA / DATASET / 'data.yaml',
+model.train(data=DATA / 'data.yaml',
             task='detect',
-            epochs=3)
+            epochs=30)
 
 # Evaluate the model's performance on the validation set
 results = model.val()
@@ -27,12 +41,12 @@ print(results)
 print("----------------------------- ----------- ----------------------------")
 
 # Export the model to ONNX format
-success = model.export(format='onnx')
+# success = model.export(format='onnx')
 
 # Perform object detection on an image using the model
-results = model(DATA / DATASET / 'valid' / 'images' / '2019-Picture11-mand_png.rf.6c45cb321e852364ff672316e992a27c.jpg')
+results = model(DATA / 'valid' / 'images' / '1_jpeg.rf.6e6037fef3b0f8023be0f9a9d715980b.jpg')
 print("----------------------------- Prediction ----------------------------")
 print(results)
 
 # Reset settings to default values
-settings.reset()
+# settings.reset()

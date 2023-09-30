@@ -20,6 +20,7 @@ ultralytics = "^8.0.184"
 torch = {version = "^2.0.1+cpu", source = "torch_repo"}
 torchvision = {version = "^0.15.2+cpu", source = "torch_repo"}
 torchaudio = {version = "^2.0.2+cpu", source = "torch_repo"}
+wandb = "^0.15.11"
 
 
 [[tool.poetry.source]]
