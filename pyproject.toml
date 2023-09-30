@@ -16,7 +16,16 @@ setuptools = "^68.1.2"
 python-dotenv = "^1.0.0"
 pydantic-settings = "^2.0.3"
 pathlib = "^1.0.1"
+ultralytics = "^8.0.184"
+torch = {version = "^2.0.1+cpu", source = "torch_repo"}
+torchvision = {version = "^0.15.2+cpu", source = "torch_repo"}
+torchaudio = {version = "^2.0.2+cpu", source = "torch_repo"}
 
+
+[[tool.poetry.source]]
+name = "torch_repo"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "supplemental"
 
 [build-system]
 requires = ["poetry-core"]
