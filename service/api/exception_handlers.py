@@ -40,7 +40,7 @@ async def http_error_handler(
         exc: HTTPException,
 ) -> JSONResponse:
     app_logger.error(str(exc))
-    error = Error(error_key="http_exception", error_message=exc.detail)
+    error = Error(error_key="http_exception", error_message=exc)
     return create_response(status_code=exc.status_code, errors=[error])
 
 
@@ -76,8 +76,9 @@ async def app_exception_handler(
 
 
 def add_exception_handlers(app: FastAPI) -> None:
-    app.add_exception_handler(HTTPException, http_error_handler)
-    app.add_exception_handler(ValidationError, validation_error_handler)
-    app.add_exception_handler(RequestValidationError, validation_error_handler)
-    app.add_exception_handler(AppException, app_exception_handler)
-    app.add_exception_handler(Exception, default_error_handler)
+    # app.add_exception_handler(HTTPException, http_error_handler)
+    # app.add_exception_handler(ValidationError, validation_error_handler)
+    # app.add_exception_handler(RequestValidationError, validation_error_handler)
+    # app.add_exception_handler(AppException, app_exception_handler)
+    # app.add_exception_handler(Exception, default_error_handler)
+    pass
