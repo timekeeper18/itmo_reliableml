@@ -9,7 +9,7 @@ ROOT = Path().cwd()
 DATASET = 'xd_n_v1i_Caries_v0'
 DATA = ROOT / 'service' / 'data' / DATASET
 
-wandb.login(key='a427b2ba60f438b85345fe30f56d9f8fd6802294')
+wandb.login(key='')
 run = wandb.init(
     entity="dentist_ai",
     project="Dentist_AI",
