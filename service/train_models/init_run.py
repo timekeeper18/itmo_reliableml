@@ -32,7 +32,8 @@ else:
 # Train the model using the 'coco128.yaml' dataset for 3 epochs
 model.train(data=DATA / 'data.yaml',
             task='detect',
-            epochs=1)
+            batch=8,
+            epochs=50)
 
 # Evaluate the model's performance on the validation set
 results = model.val()
