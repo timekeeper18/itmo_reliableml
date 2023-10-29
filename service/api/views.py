@@ -14,7 +14,8 @@ from ..ml_models.yolov5_model import YoloV5Model
 
 
 ROOT_DIR = Path(__file__).parent
-model = YoloV5Model()
+PRETRAINED_PATH = 'pretrained/yolo5.onnx'
+model = YoloV5Model(PRETRAINED_PATH)
 router = APIRouter(prefix=os.getenv('URL_PREFIX'))
 
 
@@ -69,18 +70,6 @@ async def get_rate(
     response_class=Response
 )
 def get_boxes(input_image: UploadFile = File(...)) -> Response:
-    # # Сохраняем картинку
-    # image_name = str(
-    #     input_image.filename
-    #     .encode("utf8", errors="namereplace")
-    #     .decode("utf8")
-    # ).replace('\\', '_') \
-    #  .replace('/', '_') \
-    #  .replace(' ', '_')  # .encode("utf8", "ignore") чтобы убрать символы не из utf8
-    # image_path = Path(ROOT_DIR, image_name)
-    # with open(str(image_path), "wb") as buf_img:
-    #     shutil.copyfileobj(input_image.file, buf_img)
-
     image_with_boxes = model.get_boxes(input_image.file.read())
     image_with_boxes.save('resp.png')
 
