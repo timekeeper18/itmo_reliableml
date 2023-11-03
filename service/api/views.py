@@ -4,6 +4,9 @@ import functools
 
 from fastapi import APIRouter, FastAPI, Request, Depends, Security, Form
 from fastapi.responses import FileResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 from pathlib import Path
 from service.response import ResponseData, CUSTOM_RESPONSES
 from service.request import Data
@@ -11,8 +14,22 @@ from service.request import Data
 from service.api.exceptions import NotAuthorizedError, FileNotFoundError
 from service.log import app_logger
 
-router = APIRouter(prefix=os.getenv('URL_PREFIX'))
+router = APIRouter(prefix=os.getenv('URL_PREFIX'),
+                   tags=['API'])
+router_front = APIRouter(prefix=os.getenv('FRONT_PREFIX'),
+                         tags=['FRONT'])
+templates = Jinja2Templates(directory="templates")
 
+
+@router_front.get('/', response_class=HTMLResponse)
+def index(request: Request):
+    return templates.TemplateResponse("base.html",
+                                      {"request": request})
+
+@router_front.get('/dent', response_class=HTMLResponse)
+def dent_image(request: Request):
+    return templates.TemplateResponse("dent_image.html",
+                                      {"request": request})
 
 @router.get(
     path="/health",
@@ -50,4 +67,6 @@ async def get_rate(
 
 
 def add_views(app: FastAPI) -> None:
+    app.mount("/static", StaticFiles(directory="static"), name="static")
     app.include_router(router)
+    app.include_router(router_front)
