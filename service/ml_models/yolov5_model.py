@@ -59,7 +59,7 @@ class YoloV5Model():
         return annotated_image
 
     def load_model(self, path: str):
-        self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=path, source='local')
+        self.model = torch.hub.load(Path(path).parent, 'custom', source='local', path=path)
         self.model.eval()
 
     def plot_boxes_on_image(self, image: PIL.Image, boxes: pd.DataFrame, ratio: Tuple = None) -> PIL.Image:
