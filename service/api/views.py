@@ -14,8 +14,8 @@ from ..ml_models.yolov5_model import YoloV5Model
 
 
 ROOT_DIR = Path(__file__).parent
-# PRETRAINED_PATH = 'pretrained/yolo5.onnx'
-PRETRAINED_PATH = 'pretrained/best/best.pt'
+PRETRAINED_PATH = 'pretrained/best.onnx'
+# PRETRAINED_PATH = 'pretrained/best/best.pt'
 model = YoloV5Model(PRETRAINED_PATH)
 router = APIRouter(prefix=os.getenv('URL_PREFIX'))
 

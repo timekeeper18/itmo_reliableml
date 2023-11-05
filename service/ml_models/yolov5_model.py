@@ -20,7 +20,8 @@ class YoloV5Model():
         if pretrained_path:
             if Path(pretrained_path).suffix == '.onnx':
                 self.onnx = True
-                self.session = onnxruntime.InferenceSession(pretrained_path, providers=['CPUExecutionProvider'])
+                # self.session = onnxruntime.InferenceSession(pretrained_path, providers=['CPUExecutionProvider'])
+                self.load_model(pretrained_path)
             else:
                 self.load_model(pretrained_path)
         else:
@@ -32,57 +33,64 @@ class YoloV5Model():
             img = np.fromstring(image, np.uint8)
             img = cv2.imdecode(img, cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            h_ratio = img.shape[0] / 640
-            w_ratio = img.shape[1] / 640
-            # resized = img.astype(np.float32)
+            resized = img.astype(np.float32)
             resized = cv2.resize(img, (640,640), interpolation = cv2.INTER_AREA).astype(np.float32)
             resized = resized.transpose((2, 0, 1))
-            resized = np.expand_dims(resized, axis=0)  # Add batch dimension                
-            ort_outputs = self.session.run([], {'input': resized})[0]
+            # resized = np.expand_dims(resized, axis=0)  # Add batch dimension                
 
-            output = torch.from_numpy(np.asarray(ort_outputs))
-            out = non_max_suppression(output, conf_thres=0.25, iou_thres=0.45)[0]
+            # ort_outputs = self.session.run([], {'input': resized})[0]
 
-            # convert xyxy to xywh
-            xyxy = out[:,:4]
-            boxes = xyxy[0]
-            xywh = xyxy2xywh(xyxy)
-            out[:, :4] = xywh     
-            annotated_image = self.plot_boxes_on_image(Image.open(io.BytesIO(image)), out, (h_ratio, w_ratio))            
-        else:
-            image = Image.open(io.BytesIO(image))            
-            # tensor = F.to_tensor(image)
-            results = self.model(image)
+            # output = torch.from_numpy(np.asarray(ort_outputs))
+            # out = non_max_suppression(output, conf_thres=0.25, iou_thres=0.45)[0]
+
+            # # convert xyxy to xywh
+            # xyxy = out[:,:4]
+            # boxes = xyxy[0]
+            # xywh = xyxy2xywh(xyxy)
+            # out[:, :4] = xywh     
+
+            results = self.model(resized)
             boxes = results.pandas().xyxy[0]
+            boxes = self.rescale_boxes(boxes, img.shape, (640,640))
+            annotated_image = self.plot_boxes_on_image(Image.open(io.BytesIO(image)), boxes)            
+        else:
+            image = Image.open(io.BytesIO(image))   
+            input_image = image.resize((640, 640))         
+            # tensor = F.to_tensor(image)
+            results = self.model(input_image)
+            boxes = results.pandas().xyxy[0]
+            boxes = self.rescale_boxes(boxes, input_image.size, (640,640))
+            # boxes = self.rescale_boxes(boxes, image.size, input_image.size)
             annotated_image = self.plot_boxes_on_image(image, boxes)
 
         return annotated_image
 
     def load_model(self, path: str):
-        self.model = torch.hub.load(Path(path).parent, 'custom', source='local', path=path)
+        # self.model = torch.hub.load(Path(path).parent, 'custom', source='local', path=path)
+        self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=path)
         self.model.eval()
 
     def plot_boxes_on_image(self, image: PIL.Image, boxes: pd.DataFrame, ratio: Tuple = None) -> PIL.Image:
         # Helper function to draw bounding boxes on the image using PIL.ImageDraw
         draw = ImageDraw.Draw(image)
-        if self.onnx:
-            # tmp_image = Image.fromarray(image)
-            h_ratio, w_ratio = ratio
-            scaled_boxes = self.scale_boxes((640, 640), boxes, image.size)
-            for i, (x, y, w, h, score, class_id) in enumerate(scaled_boxes):
-                # real_x = x * w_ratio # resize from model size to image size
-                # real_y = y * h_ratio
+        # if self.onnx:
+        #     # tmp_image = Image.fromarray(image)
+        #     h_ratio, w_ratio = ratio
+        #     scaled_boxes = self.scale_boxes((640, 640), boxes, image.size)
+        #     for i, (x, y, w, h, score, class_id) in enumerate(scaled_boxes):
+        #         # real_x = x * w_ratio # resize from model size to image size
+        #         # real_y = y * h_ratio
 
-                # shape = (real_x, real_y, (x + w) * w_ratio, (y + h) * h_ratio) # shape of the bounding box to draw               
-                shape = (x, y, x + w, y + h) # shape of the bounding box to draw          
-                color = 'red'
-                draw.rectangle(shape, outline=color, width=4)
-                fnt = ImageFont.load_default()
-                draw.multiline_text((x + 8, y + 8), f"{score*100:.2f}%", font=fnt, fill=color)
-        else:
-            for _, box in boxes.iterrows():
-                xmin, ymin, xmax, ymax = box["xmin"], box["ymin"], box["xmax"], box["ymax"]
-                draw.rectangle([(xmin, ymin), (xmax, ymax)], outline="red", width=2)
+        #         # shape = (real_x, real_y, (x + w) * w_ratio, (y + h) * h_ratio) # shape of the bounding box to draw               
+        #         shape = (x, y, x + w, y + h) # shape of the bounding box to draw          
+        #         color = 'red'
+        #         draw.rectangle(shape, outline=color, width=4)
+        #         fnt = ImageFont.load_default()
+        #         draw.multiline_text((x + 8, y + 8), f"{score*100:.2f}%", font=fnt, fill=color)
+        # else:
+        for _, box in boxes.iterrows():
+            xmin, ymin, xmax, ymax = box["xmin"], box["ymin"], box["xmax"], box["ymax"]
+            draw.rectangle([(xmin, ymin), (xmax, ymax)], outline="red", width=2)
 
         return image
     
@@ -99,6 +107,28 @@ class YoloV5Model():
         boxes[..., [1, 3]] -= pad[1]  # y padding
         boxes[..., :4] /= gain
         self.clip_boxes(boxes, img0_shape)
+        return boxes
+    
+    def rescale_boxes(self, boxes: pd.DataFrame, original_shape: Tuple[int, int], current_shape: Tuple[int, int]) -> pd.DataFrame:
+        """
+        Rescale bounding boxes to the original image size.
+
+        Parameters:
+        boxes (pd.DataFrame): DataFrame containing bounding box coordinates.
+        original_shape (tuple): The shape of the original image (height, width).
+        current_shape (tuple): The shape of the current image (height, width).
+
+        Returns:
+        pd.DataFrame: DataFrame containing rescaled bounding box coordinates.
+        """
+        height_ratio = original_shape[0] / current_shape[0]
+        width_ratio = original_shape[1] / current_shape[1]
+
+        boxes['xmin'] *= width_ratio
+        boxes['xmax'] *= width_ratio
+        boxes['ymin'] *= height_ratio
+        boxes['ymax'] *= height_ratio
+
         return boxes
 
     def clip_boxes(self, boxes, shape):
