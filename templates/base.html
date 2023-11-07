@@ -12,22 +12,29 @@
 </head>
 <body>
     <hr>
-    <nav class="flex justify-between text-3xl my-3">
+    <nav class="flex rounded-3 border-2 justify-between text-3xl my-3">
     <ul class="flex ml-10">
             <li>DetistAI for ReliableML</li>
         </ul>
     </nav>
     {% block content %}
-
-    <form method="post" action="/front/rate/"  enctype="multipart/form-data">
-         <input type="file" id="files" name="file"><br>
+    <form method="POST" action="/rate" enctype="multipart/form-data" >
+        <div class="inline-flex">
+            <input class="ml-10 border-1 rounded-2xl bg-gray-300 p-1 inline-block"
+                type="file" id="uploaded_file"
+                name="uploaded_file"
+                multiple accept=".jpg, .png, .jpeg">
+        <input type="submit"
+               value="Отправить на проверку"
+               class="ml-5 border-1 rounded-2xl bg-gray-300 p-1 "></div>
     </form>
-    <img src="data:image/jpeg;base64,{{ myImage | safe }}" alt="boxes" class="border-2 rounded-3xl bg-gray-300 p-3">
-<!--        <div class="flex rounded-3 border-2 p-3 mt-5">-->
-<!--            <input id="operation_upload" type="file" onchange="previewFile()" class="ui-button-text">-->
-<!--            <img width="640" src="{{ url_for('static', path='static_test.jpg') }}" alt="boxes" class="border-2 rounded-3xl bg-gray-300 p-3">-->
-<!--            <img width="640" alt="boxes" class="border-2 rounded-3xl bg-gray-300 p-3">-->
-<!--        </div>-->
+    <br>
+    <div class="flex items-center">
+
+    {% if myImage %}
+    <img src="data:image/png;base64,{{ myImage | safe }}" class="flex ml-10 border-1 rounded-2xl bg-gray-300 p-3">
+    {% endif %}
+    </div>
 {% endblock %}
 </body>
 </html>

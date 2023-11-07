@@ -1,3 +1,4 @@
+import base64
 import os
 import traceback
 import functools
@@ -16,7 +17,8 @@ from service.log import app_logger
 
 router = APIRouter(prefix=os.getenv('URL_PREFIX'),
                    tags=['API'])
-router_front = APIRouter(prefix=os.getenv('FRONT_PREFIX'),
+router_front = APIRouter(
+    # prefix=os.getenv('FRONT_PREFIX'),
                          tags=['FRONT'])
 templates = Jinja2Templates(directory="templates")
 
@@ -28,8 +30,9 @@ def index(request: Request):
 
 
 @router_front.post('/rate', response_class=HTMLResponse)
-def index(request: Request, input_image: UploadFile = File(...)):
-    base64_encoded_image = input_image.file.read()
+def make_rate(request: Request, uploaded_file: UploadFile = File(...)):
+
+    base64_encoded_image = base64.b64encode(uploaded_file.file.read()).decode("utf-8")
     return templates.TemplateResponse("base.html", {"request": request, "myImage": base64_encoded_image})
 @router.post(
     '/get_boxes',
