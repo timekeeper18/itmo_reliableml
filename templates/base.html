@@ -6,8 +6,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
-    {% block head %}{% endblock %}
+    {% block head %}
     <title>DetistAI for ReliableML</title>
+    {% endblock %}
 </head>
 <body>
     <hr>
@@ -16,8 +17,17 @@
             <li>DetistAI for ReliableML</li>
         </ul>
     </nav>
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
+    {% block content %}
+
+    <form method="post" action="/front/rate/"  enctype="multipart/form-data">
+         <input type="file" id="files" name="file"><br>
+    </form>
+    <img src="data:image/jpeg;base64,{{ myImage | safe }}" alt="boxes" class="border-2 rounded-3xl bg-gray-300 p-3">
+<!--        <div class="flex rounded-3 border-2 p-3 mt-5">-->
+<!--            <input id="operation_upload" type="file" onchange="previewFile()" class="ui-button-text">-->
+<!--            <img width="640" src="{{ url_for('static', path='static_test.jpg') }}" alt="boxes" class="border-2 rounded-3xl bg-gray-300 p-3">-->
+<!--            <img width="640" alt="boxes" class="border-2 rounded-3xl bg-gray-300 p-3">-->
+<!--        </div>-->
+{% endblock %}
 </body>
 </html>
