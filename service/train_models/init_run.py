@@ -6,7 +6,7 @@ from ultralytics import YOLO, settings
 # Settings init
 ROOT = Path().cwd()
 
-DATASET = 'dentasis_v30_Caries_v0'
+DATASET = 'dentasis_v30_2_Occlus_Caries_v0'
 DATA = ROOT / 'service' / 'data' / DATASET
 
 wandb.login(key='a427b2ba60f438b85345fe30f56d9f8fd6802294')
@@ -26,14 +26,14 @@ model = YOLO('yolov8m.yaml')
 if DATA.is_dir():
     artifact_dir = DATA
 else:
-    artifact = run.use_artifact("dentist_ai/Dentist_AI/dentasis_v30_Caries_v0:v0", type="dataset")
+    artifact = run.use_artifact("dentist_ai/Dentist_AI/dentasis_v30_2_Occlus_Caries_v0:v0", type="dataset")
     artifact.download(DATA)
 
 # Train the model using the 'coco128.yaml' dataset for 3 epochs
 model.train(data=DATA / 'data.yaml',
             task='detect',
             batch=8,
-            epochs=1)
+            epochs=50)
 
 # Evaluate the model's performance on the validation set
 results = model.val()
