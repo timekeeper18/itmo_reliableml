@@ -31,21 +31,37 @@
 - Среда: разработка на личных компьютерах, развертывание в облачном сервере.
 - Стэк-технологий: Python, FastAPI, pytorch, Wandb.
 - Данные: для текущей итерации открытые данные с соревнований kaggle, данные с roboflow.com:
+- 
 https://universe.roboflow.com/school-waoxh/caries-e8k9g
+
 https://universe.roboflow.com/digital-health-bg/caries-detection-euzne
+
 https://www.kaggle.com/datasets/pushkar34/teeth-dataset
+
 https://zenodo.org/record/4907880
+
 https://www.kaggle.com/datasets/salmansajid05/oral-diseases
+
 https://universe.roboflow.com/dental-app/dental-app
+
 https://universe.roboflow.com/predict-caries-1/occlusal-caries-detection-olf03/
+
 https://universe.roboflow.com/dental-project-fcai/dental-project-bvtip
+
 https://universe.roboflow.com/dentasis/dentasis
+
 https://universe.roboflow.com/vitekthebest/mega-thoart-data/
+
 https://universe.roboflow.com/vitekthebest/caries-scjtb
+
 https://universe.roboflow.com/proyecto-odontologia/proyecto-deteccion-de-enfermedades-dentales
-https://universe.roboflow.com/111-j3wer/xd_2 
+
+https://universe.roboflow.com/111-j3wer/xd_2
+
 https://universe.roboflow.com/odontoapp/toothcaries
+
 https://universe.roboflow.com/yolo-lgmeg/yolo-conversion-fbsju
+
 https://universe.roboflow.com/111-j3wer/our 
 
 - **Регуляторные, complience и privacy ограничения** - ???
