@@ -20,7 +20,7 @@ settings.update({'runs_dir': ROOT / 'service' / 'train_models' / 'runs',
                  'wandb': True})
 
 # Load a pretrained YOLO model (recommended for training)
-model = YOLO('yolov8m.yaml')
+model = YOLO('yolov5m6.yaml')
 # model = YOLO(ROOT / 'service' / 'train_models' / 'pretrained' / 'yolov8n.pt')
 
 if DATA.is_dir():
@@ -31,11 +31,12 @@ else:
 
 # Train the model using the 'coco128.yaml' dataset for 3 epochs
 model.train(data=DATA / 'data.yaml',
+            optimizer='SGD',
             task='detect',
-            batch=8,
-            epochs=50)
+            batch=4,
+            epochs=300)
 
-# Evaluate the model's performance on the validation set
+# Evaluate the model's performance on the validation set dentasis_v30_4_Dental_disease_detection_Occlus_v0
 results = model.val()
 print("----------------------------- Val results ----------------------------")
 print(results)

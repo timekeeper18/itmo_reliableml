@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-from pathlib import Path
+import requests
 from service.response import ResponseData, CUSTOM_RESPONSES
 from service.request import Data
 
@@ -32,7 +32,11 @@ def index(request: Request):
 @router_front.post('/rate', response_class=HTMLResponse)
 def make_rate(request: Request, uploaded_file: UploadFile = File(...)):
 
-    base64_encoded_image = base64.b64encode(uploaded_file.file.read()).decode("utf-8")
+    fb = uploaded_file.file.read()
+    img_box = requests.post(url='http://192.168.18.88:8000/api/v1/get_boxes', files={'input_image': fb})
+    with open('111.jpg', 'wb') as f:
+        f.write(fb)
+    base64_encoded_image = base64.b64encode(img_box.content).decode("utf-8")
     return templates.TemplateResponse("base.html", {"request": request, "myImage": base64_encoded_image})
 @router.post(
     '/get_boxes',
