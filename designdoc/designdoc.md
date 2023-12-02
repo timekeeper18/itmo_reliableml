@@ -137,6 +137,7 @@ V1.0:
 | dentasis_dental_disease_occlus | https://universe.roboflow.com/dentasisv30/dentasis_dental_disease_occlus/                      | 575             | Кариес. Объединение трех очищенных и частично размеченных датасетов. | Подходит. Этот набор был создан, как объединение трёх других.                                                             |
 | tteth                          | https://universe.roboflow.com/k-nybrl/tteth                                                    | 291             | Здоровые зубы (в основном)                                           | Подходит. После чистки оставим только фото здоровых зубов. Будем использовать, как background images, для снижения FP     |
 | norma-l                        | https://universe.roboflow.com/college-gl4rb/norma-l/dataset/1                                  | 115             | Здоровые зубы (в основном)                                           | Подходит, как background images. После чистки оставим только фото здоровых зубов. Частично пересекается с датасетом tteth |
+| aug dentasis_dental_disease_occlus| https://universe.roboflow.com/dentasisv30/dentasis_dental_disease_occlus/dataset/2          | 1655            | Кариес.                                                              | Аугментированный поворотами, сдвигами и отражением базовый датасет.                                                       |  
 
 EDA показал, что данные всех датасетов очень плохо размечены, есть много неподходящих фото.
 - Необходимо отобрать фотографии, на которых хорошо видны зубы и корректная разметка.
