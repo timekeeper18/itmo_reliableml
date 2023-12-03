@@ -26,7 +26,7 @@ model = YOLO('yolov5m6.yaml')
 if DATA.is_dir():
     artifact_dir = DATA
 else:
-    artifact = run.use_artifact("dentist_ai/Dentist_AI/dentasis_v30_2_Occlus_Caries_v0:v0", type="dataset")
+    artifact = run.use_artifact("dentist_ai/Dentist_AI/dentasis_v30_6_Dental_disease_detection_Occlus:v0", type="dataset")
     artifact.download(DATA)
 
 # Train the model using the 'coco128.yaml' dataset for 3 epochs
@@ -34,7 +34,7 @@ model.train(data=DATA / 'data.yaml',
             optimizer='SGD',
             task='detect',
             batch=4,
-            epochs=300)
+            epochs=30)
 
 # Evaluate the model's performance on the validation set dentasis_v30_4_Dental_disease_detection_Occlus_v0
 results = model.val()
