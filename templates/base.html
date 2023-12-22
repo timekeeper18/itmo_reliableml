@@ -11,30 +11,52 @@
     {% endblock %}
 </head>
 <body>
-    <hr>
-    <nav class="flex rounded-3 border-2 justify-between text-3xl my-3">
+<hr>
+<nav class="flex rounded-3 border-2 justify-between text-3xl my-3">
     <ul class="flex ml-10">
-            <li>DetistAI for ReliableML</li>
-        </ul>
-    </nav>
-    {% block content %}
-    <form method="POST" action="/rate" enctype="multipart/form-data" >
-        <div class="inline-flex">
-            <input class="ml-10 border-1 rounded-1xl bg-gray-300 p-1 inline-block"
-                type="file" id="uploaded_file"
-                name="uploaded_file"
-                multiple accept=".jpg, .png, .jpeg">
+        <li>DetistAI for ReliableML</li>
+    </ul>
+</nav>
+{% block content %}
+<nav class="flex rounded-3 border-2 justify-between text-2xl my-2">
+    <ul class="flex ml-10">
+        <li>Примеры изображений</li>
+    </ul>
+</nav>
+<nav class="flex rounded-3 border-2 justify-between text-2xl my-2">
+    <ul class="flex ml-10">
+        <img src="static/011_00493_11_a091_jpg.rf.d9cd01a4ad65aae4049a99e0eba6e507.jpg"
+             class="flex ml-10 border-1 rounded-2xl bg-gray-300 p-2" width="200" height="200">
+        <img src="static/011_00525_11_a091_jpg.rf.51dd506635b6777ab60e814b51cb76ac.jpg"
+             class="flex ml-10 border-1 rounded-2xl bg-gray-300 p-2" width="200" height="200">
+        <img src="static/018_00053_03_a091_jpg.rf.f631c3913a39b0bf2d20d8ae68de295c.jpg"
+             class="flex ml-10 border-1 rounded-2xl bg-gray-300 p-2" width="200" height="200">
+    </ul>
+</nav>
+
+
+<ul class="flex ml-10">
+    <li><a href="https://disk.yandex.ru/d/S-Zyxiv0syFMCA" target="_blank">Скачать и попробовать</a></li>
+    <br><br>
+</ul>
+
+<form method="POST" action="/rate" enctype="multipart/form-data">
+    <div class="inline-flex">
+        <input class="ml-10 border-1 rounded-2xl bg-gray-300 p-1 inline-block"
+               type="file" id="uploaded_file"
+               name="uploaded_file"
+               multiple accept=".jpg, .png, .jpeg">
         <input type="submit"
                value="Отправить на проверку"
-               class="ml-5 border-1 rounded-1xl bg-gray-300 p-1 "></div>
-    </form>
-    <br>
-    <div class="flex items-center">
+               class="ml-5 border-1 rounded-2xl bg-gray-300 p-1 "></div>
+</form>
+<br>
+<div class="flex items-center">
 
     {% if myImage %}
     <img src="data:image/png;base64,{{ myImage | safe }}" class="flex ml-10 border-1 rounded-2xl bg-gray-300 p-3">
     {% endif %}
-    </div>
+</div>
 {% endblock %}
 </body>
 </html>
